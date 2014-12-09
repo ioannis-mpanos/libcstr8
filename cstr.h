@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define STR8_SANITY_CHECKS	1
+
 struct str8_struct_t;
 
 typedef struct str8_struct_t * str8_t;
@@ -32,6 +34,8 @@ void str8free(str8_t str);
 str8_t str8cpy(str8_t dst, str8_t src);
 str8_t str8cat(str8_t str1, str8_t str2);
 
+int str8findfirst(str8_t haystack, str8_t needle);
+int str8find(str8_t haystack, str8_t needle, int offset);
 
 inline const char * cstr(str8_t str)
 {

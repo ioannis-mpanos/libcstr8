@@ -59,62 +59,87 @@ static inline int _ensure_capacity(str8_t str, size_t alloc_len)
 	return 1;
 }
 
+/* NULL is used for emphasis in the following function implementations */
+/* Sanity checks may be switched out of compilation for more efficient production code. */
+
 str8_t str8new(const char * cstr_ptr)
 {
-	if (cstr_ptr)
-	{
-		str8_t result;
+	str8_t result;
 
-		result = calloc(1, sizeof(_str8));
-		if (result)
-		{
-			result->length = strlen(cstr_ptr);
-			if (!_ensure_capacity(result, _aligned_capacity(result->length+1)))
-				return 0;
-			strcpy(result->string8, cstr_ptr);
-			return result;
-		}
-	} else
-		return str8new("");
-	return 0;
+	#ifdef STR8_SANITY_CHECKS
+	if (!cstr_ptr)
+		return NULL;
+	#endif
+	if (!(result = calloc(1, sizeof(_str8))))
+		return NULL;
+	result->length = strlen(cstr_ptr);
+	if (!_ensure_capacity(result, _aligned_capacity(result->length+1)))
+		return NULL;
+	strcpy(result->string8, cstr_ptr);
+	return result;
 }
 
 str8_t str8cpy(str8_t dst, str8_t src)
 {
-
-	if (dst != NULL)
-	{
-		if (src != NULL)
-		{
-			if (!_ensure_capacity(dst, _aligned_capacity(src->length+1)))
-				return 0;
-			dst->length = src->length;
-			strcpy(dst->string8, src->string8);
-		}
+	#ifdef STR8_SANITY_CHECKS
+	if (!dst)
+		return NULL;
+	else if (!src)
 		return dst;
-	}
+	#endif
+	if (!_ensure_capacity(dst, _aligned_capacity(src->length+1)))
+		return NULL;
+	dst->length = src->length;
+	strcpy(dst->string8, src->string8);
 	return NULL;
 }
 
 str8_t str8cat(str8_t str1, str8_t str2)
 {
-	if (str1 != NULL)
-	{
-		if (str2 != NULL)
-		{
-			size_t offset = str1->length;
-			if (!_ensure_capacity(str1, _aligned_capacity(str1->length+str2->length+1)))
-				return 0;
-
-			str1->length += str2->length;
-			memcpy(str1->string8+offset, str2->string8, str2->length);
-			str1->string8[str1->length] = '\0';
-		}
+	size_t offset;
+	#ifdef STR8_SANITY_CHECKS
+	if (!str1)
+		return NULL;
+	else if (!str2)
 		return str1;
-	}
-	return NULL;
+	#endif
+	offset = str1->length;
+	if (!_ensure_capacity(str1, _aligned_capacity(str1->length+str2->length+1)))
+		return NULL;
+	str1->length += str2->length;
+	/* Ensure that str8cat(s,s) works as expected */
+	memcpy(str1->string8+offset, str2->string8, str2->length);
+	str1->string8[str1->length] = '\0';
+	return str1;
 }
 
+int str8findfirst(str8_t haystack, str8_t needle)
+{
+	char * needle_ptr;
+	#ifdef STR8_SANITY_CHECKS
+	if (!haystack || !needle)
+		return -1;
+	#endif
+	needle_ptr = strstr(haystack->string8, needle->string8);
+	if (needle_ptr)
+		return needle_ptr - haystack->string8;
+	return -1;
+}
+
+int str8find(str8_t haystack, str8_t needle, int offset)
+{
+	char * needle_ptr;
+	#ifdef STR8_SANITY_CHECKS
+	if (!haystack || !needle)
+		return -1;
+	#endif
+	if (offset>=haystack->length)
+		return -1;
+	needle_ptr = strstr(haystack->string8 + offset, needle->string8);
+	if (needle_ptr)
+		return needle_ptr - haystack->string8;
+	return -1;
+}
 
 void str8free(str8_t str)
 {
