@@ -66,10 +66,8 @@ str8_t str8new(const char * cstr_ptr)
 {
 	str8_t result;
 
-	#ifdef STR8_SANITY_CHECKS
 	if (!cstr_ptr)
-		return NULL;
-	#endif
+		cstr_ptr = "";
 	if (!(result = calloc(1, sizeof(_str8))))
 		return NULL;
 	result->length = strlen(cstr_ptr);
