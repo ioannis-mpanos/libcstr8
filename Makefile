@@ -5,6 +5,9 @@ CFLAGS=-Wall -pedantic -std=c99 -O2 -D_GNU_SOURCE
 CPPFLAGS+= -MMD -MP
 TARGET=test
 
+.PHONY: all doxy
+
+
 all: $(TARGET)
 
 debug: $(TARGET)
@@ -18,6 +21,8 @@ $(TARGET): $(OBJS)
 
 -include $(OBJS:.o=.d)
 
+doxy:
+	doxygen doxy.conf
 clean:
 	rm -f test *.o *.d
 

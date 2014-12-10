@@ -16,6 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
+
+/** \file cstr.h
+	\brief Definitions and prototypes for the str8 library.
+
+	This file defines a new type str8_t
+*/
 #ifndef CSTR_HEADER_DEFINED
 #define CSTR_HEADER_DEFINED
 
@@ -24,14 +30,38 @@
 
 #define STR8_SANITY_CHECKS	1
 
-struct str8_struct_t;
 
+/** \brief The type \a str8_t is the one used for representing dynamic strings.*/
 typedef struct str8_struct_t * str8_t;
 
+/* Create and destroy strings */
+
+/** \brief Initialize a new string object from a C string.
+	Create a new dynamic string, copying the contents of the null terminated
+	string in \a cstr. If \b NULL is passed as an argument, a new empty string is
+	returned.
+	\param cstr A pointer to a null terminated string, or 0.
+	\return The new string on success, \b NULL on error.
+*/
 str8_t str8new(const char * cstr);
+
+/** \brief Deallocate the resources used by the dynamic string \a str.
+	\param str The dynamic string to deallocate.
+*/
 void str8free(str8_t str);
 
+/** \brief Copy the contents of dynamic string \a src into \a dst.
+	\param dst The dynamic string to copy into.
+	\param src The dynamic string to copy from.
+	\return \a dst on success, \b NULL on error.
+*/
+
 str8_t str8cpy(str8_t dst, str8_t src);
+/** \brief Concatenate the dynamic string \a str2 after \a str1.
+	\param str1 The dynamic string to hold the result of concatenation.
+	\param str2 The dynamic string to concatenate after \a str1.
+	\return \a str1 on succes, \b NULL on error.
+*/
 str8_t str8cat(str8_t str1, str8_t str2);
 
 int str8findfirst(str8_t haystack, str8_t needle);
