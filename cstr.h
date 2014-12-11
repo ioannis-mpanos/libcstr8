@@ -35,8 +35,9 @@
 typedef struct str8_struct_t * str8_t;
 
 
-/** Create and destroy strings
-	==========================
+/**
+	\defgroup str8_object_management Create and destroy strings
+	@{
 */
 
 
@@ -55,8 +56,9 @@ str8_t str8new(const char * cstr);
 void str8free(str8_t str);
 
 
-/** Manipulate strings
-	==================
+/** @} */ /* End of str8_object_management group */
+/**	\defgroup str8_manipulate Manipulate strings
+	@{
 */
 
 
@@ -72,6 +74,13 @@ str8_t str8cpy(str8_t dst, str8_t src);
 	\return \a str1 on succes, \b NULL on error.
 */
 str8_t str8cat(str8_t str1, str8_t str2);
+
+
+/** @} */ /* End of str8_manipulate group */
+/**	\defgroup str8_search Search strings
+	@{
+*/
+
 
 /** \brief Find the first dynamic string \a needle in the dynamic string \a haystack.
 	\param haystack The dynamic string to be searched.
@@ -92,8 +101,9 @@ int str8findfirst(str8_t haystack, str8_t needle);
 int str8find(str8_t haystack, str8_t needle, int offset);
 
 
-/** Accessors for the string buffer
-	===============================
+/** @} */ /* End of str8_search group */
+/**	\defgroup str8_raw_buffer Accessors for the string buffer
+	@{
 */
 
 
@@ -120,6 +130,13 @@ inline char * str8dup(str8_t str)
 	return strdup(cstr(str));
 }
 
+
+/** @} */ /* End of str8_raw_buffer group */
+/**	\defgroup str8_misc Other functions
+	@{
+*/
+
+
 /** \brief Clone the dynamic string \a str.
 	\param str The dynamic string to clone.
 	\return A new dynamic string with the same contents as \a str or NULL on error.
@@ -141,4 +158,5 @@ inline size_t str8len(str8_t str)
 	return *(size_t *)((char *)str + sizeof(char *));
 }
 
+/** @} */ /* End of str8_misc group */
 #endif

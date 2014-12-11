@@ -8,7 +8,7 @@ TARGET=test
 .PHONY: all doxy
 
 
-all: $(TARGET)
+all: $(TARGET) doxy
 
 debug: $(TARGET)
 debug: CFLAGS+= -DDEBUG -g
