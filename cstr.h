@@ -20,19 +20,26 @@
 /** \file cstr.h
 	\brief Definitions and prototypes for the str8 library.
 
-	This file defines a new type str8_t
+	This file defines a new dynamic string type str8_t. The type is a simple
+	managed buffer of char.
+
+	Although there exist many implementations for dynamic string types in C,
+	most of them are duplicating the C <string.h> interface. The purpose of
+	this library is to provide functionality which is either missing from the
+	standard string library, or awkward to use.
+
 */
 #ifndef CSTR_HEADER_DEFINED
 #define CSTR_HEADER_DEFINED
 
-#include <stdlib.h>
 #include <string.h>
 
+/** \brief When defined the library will impose sanity checks on pointers. */
 #define STR8_SANITY_CHECKS	1
 
 
 /** \brief The type \a str8_t is the one used for representing dynamic strings.*/
-typedef struct str8_struct_t * str8_t;
+typedef struct _str8_tag * str8_t;
 
 
 /**
@@ -68,6 +75,7 @@ void str8free(str8_t str);
 	\return \a dst on success, \b NULL on error.
 */
 str8_t str8cpy(str8_t dst, str8_t src);
+
 /** \brief Concatenate the dynamic string \a str2 after \a str1.
 	\param str1 The dynamic string to hold the result of concatenation.
 	\param str2 The dynamic string to concatenate after \a str1.
@@ -98,7 +106,7 @@ int str8findfirst(str8_t haystack, str8_t needle);
 	found, or -1 when the search failed.
 */
 
-int str8find(str8_t haystack, str8_t needle, int offset);
+int str8find(str8_t haystack, str8_t needle, size_t offset);
 
 
 /** @} */ /* End of str8_search group */
