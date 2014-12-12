@@ -21,14 +21,14 @@
 
 int main(int argc, char **argv)
 {
-	str8_t str1 = str8new("Hello world!");
-	str8_t str2 = str8clone(str1);
+    str8_t str1 = str8new("Hello world!");
+    str8_t str2 = str8clone(str1);
 
-	printf("(%lu)'%s'\n", str8len(str1), cstr(str1));
-	printf("(%lu)'%s'\n", str8len(str2), cstr(str2));
-	str8cat(str1, str1);
-	printf("(%lu)'%s'\n", str8len(str1), cstr(str1));
-	str8free(str1);
-	str8free(str2);
-	return 0;
+    printf("(%lu)'%s'\n", str8len(str1), cstr(str1));
+    printf("(%lu)'%s'\n", str8len(str2), cstr(str2));
+    str8cat(str1, str1);
+    printf("(%lu)'%s'\n", str8len(str1), cstr(str1));
+    str8free(str1);
+    str8free(str2);
+    return 0;
 }
