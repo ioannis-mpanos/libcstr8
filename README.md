@@ -1,4 +1,4 @@
-c-sources
+libcstr8
 =========
 
-Repository with C projects
+A simple dynamic C-string library
